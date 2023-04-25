@@ -1,0 +1,35 @@
+# Dependency directories
+/node_modules
+
+# Environment variables
+.env
+
+# Log files
+*.log
+
+# Editor directories and files
+.idea
+.vscode
+.DS_Store
+
+# Build directories
+/build
+/dist
+
+# Dependency lock files
+package-lock.json
+yarn.lock
+npm-shrinkwrap.json
+
+# System files
+*.iml
+*.bak
+*.swp
+*.tmp
+
+# Other generated files
+coverage/
+.nyc_output/
+*.pid
+*.seed
+*.pid.lock
