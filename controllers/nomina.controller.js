@@ -2,6 +2,7 @@ import { Op, where } from "sequelize";
 import { Empleado } from "../models/empleado.model.js";
 import { Asistencia } from "../models/asistencia.model.js";
 import { Nomina } from "../models/nomina.model.js";
+import sequelize from 'sequelize';
 
 //Crea una nueva Nomina con campos por defecto
 export const createNomina = async (req, res) => {
@@ -106,7 +107,6 @@ export const getNominaById = async (req, res) => {
 };
 
 // Actualizar una nómina
-// Actualizar una nómina
 export const updateNomina = async (req, res) => {
     try {
         const { id_nomina } = req.params;
@@ -170,5 +170,39 @@ export const deleteNomina = async (req, res) => {
     } catch (error) {
         console.log(error);
         res.status(500).json({ message: "Error al eliminar la nomina", error: error });
+    }
+};
+
+//Trae todos los rangos de fecha distintos
+// Obtener rangos de fecha distintos
+export const getDistinctDateRanges = async (req, res) => {
+    try {
+        const dateRanges = await Nomina.findAll({
+            attributes: [
+                [sequelize.literal('DISTINCT `fecha_inicio`'), 'fecha_inicio'],
+                [sequelize.literal('`fecha_fin`'), 'fecha_fin'],
+            ],
+        });
+        const dates = dateRanges.map((dateRange) => {
+            return {
+                fecha_inicio: dateRange.fecha_inicio,
+                fecha_fin: dateRange.fecha_fin,
+            };
+        });
+        res.status(200).json({ data: dates });
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ message: "Error al obtener los rangos de fecha", error: error });
+    }
+};
+
+
+//Trae todas las nominas que pertenecen a un empleado:
+export const getNominasByEmpleadoId = async (req, res) => {
+    try {
+        const nominas = await Nomina.findAll({ id_empleado: req.params.id_empleado });
+        res.json(nominas);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
     }
 };
