@@ -4,7 +4,7 @@ import {createNomina, deleteNomina, getNominaById, getNominas, getNominasRange, 
 const router = Express.Router();
 
 //ruta para crear una nueva nomina basado en el id del empleado
-router.post('/:id_empleado', createNomina);
+router.post('/', createNomina);
 
 //trae todas las nominas de un rango de fechas
 router.get('/:fecha_inicio/:fecha_fin', getNominasRange);

@@ -97,3 +97,6 @@ export const eliminarAsistencia = async (req, res) => {
     return res.status(500).json({ message: "La asistencia no se pudo eliminar" })
   }
 }
+
+//Elmininar todas las asistencias de una fecha
+

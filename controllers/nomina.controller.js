@@ -6,16 +6,11 @@ import { Nomina } from "../models/nomina.model.js";
 //Crea una nueva Nomina con campos por defecto
 export const createNomina = async (req, res) => {
     try {
-        const { id_empleado } = req.params;
+        const { id_empleado, fecha_inicio, fecha_fin } = req.body;
         const empleado = await Empleado.findByPk(id_empleado);
         if (!empleado) {
             return res.status(404).json({ message: 'Empleado no encontrado' });
         }
-
-        const fecha = new Date();
-        const fecha_fin = new Date(fecha);
-        const fecha_inicio = new Date();
-        fecha_inicio.setDate(fecha_fin.getDate() - 7);
 
         const asistencias = await Asistencia.findAll({
             where: {
@@ -81,10 +76,10 @@ export const getNominasRange = async (req, res) => {
                 },
                 fecha_fin: {
                     [Op.eq]: fecha_fin
-                },
-                include: {
-                    model: Empleado, attributes: ['nombre', 'apellido_paterno']
                 }
+            },
+            include: {
+                model: Empleado, attributes: ['nombre', 'apellido_paterno']
             }
         });
         res.status(200).json({ data: nominas });
