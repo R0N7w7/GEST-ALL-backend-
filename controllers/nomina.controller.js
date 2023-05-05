@@ -58,7 +58,7 @@ export const createNomina = async (req, res) => {
 // Obtener todas las nóminas
 export const getNominas = async (req, res) => {
     try {
-        const nominas = await Nomina.findAll({ include: { model: Empleado, attributes: ['nombre', 'apellido_paterno'] } });
+        const nominas = await Nomina.findAll({ include: { model: Empleado, attributes: ['nombre', 'apellido_paterno'] },order: [['id_empleado', 'ASC']] });
         res.status(200).json({ data: nominas });
     } catch (error) {
         console.log(error);
@@ -82,7 +82,7 @@ export const getNominasRange = async (req, res) => {
             include: {
                 model: Empleado, attributes: ['nombre', 'apellido_paterno']
             },
-            order: [['fecha_inicio', 'ASC']]
+            order: [['id_empleado', 'ASC']]
         });
         res.status(200).json({ data: nominas });
     } catch (error) {
@@ -182,6 +182,7 @@ export const getDistinctDateRanges = async (req, res) => {
                 [sequelize.literal('DISTINCT `fecha_inicio`'), 'fecha_inicio'],
                 [sequelize.literal('`fecha_fin`'), 'fecha_fin'],
             ],
+            order: [['fecha_inicio', 'ASC']]
         });
         const dates = dateRanges.map((dateRange) => {
             return {

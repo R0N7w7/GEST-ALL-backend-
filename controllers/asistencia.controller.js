@@ -13,7 +13,8 @@ export const listarAsistencias = async (req, res, next) => {
       console.log("Fecha Bien");
       const asistencias = await Asistencia.findAll({
         where: { fecha: fecha },
-        include: { model: Empleado, attributes: ['nombre', 'apellido_paterno'] }
+        include: { model: Empleado, attributes: ['nombre', 'apellido_paterno'] },
+        order: [['id_empleado', 'ASC']]
       });
       res.json(asistencias);
     } else {
