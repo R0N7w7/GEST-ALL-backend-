@@ -44,7 +44,7 @@ export const crearAsistencia = async (req, res, next) => {
       horas_extras,
       id_empleado
     });
-   //
+    //
 
     res.status(201).json(asistenciaCreada).json({ message: "La asistencia fue registrada" });
   } catch (error) {
@@ -88,7 +88,7 @@ export const eliminarAsistencia = async (req, res) => {
     if (!asistenciaExistente) {
       return res.status(404).json({ message: 'No se encontró la asistencia' });
     }
-    
+
     await asistenciaExistente.destroy();
 
     res.json({ message: "Asistencia eliminada" });
@@ -98,5 +98,21 @@ export const eliminarAsistencia = async (req, res) => {
   }
 }
 
-//Elmininar todas las asistencias de una fecha
+//Elmina todas las asistencias de un empleado
+export const eliminarAsistenciasEmpleado = async (req, res) => {
+  const { id_empleado } = req.params;
 
+  try {
+    const empleadoExistente = await Empleado.findByPk(id_empleado);
+    if (!empleadoExistente) {
+      return res.status(404).json({ message: 'No se encontró el empleado' });
+    }
+
+    await Asistencia.destroy({ where: { id_empleado } });
+
+    res.json({ message: "Asistencias eliminadas" });
+
+  } catch (error) {
+    return res.status(500).json({ message: "Las asistencias no se pudieron eliminar" })
+  }
+}
