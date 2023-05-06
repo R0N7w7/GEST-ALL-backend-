@@ -1,5 +1,15 @@
 import Express from "express";
-import {createNomina, deleteNomina, getNominaById, getNominas, getNominasRange, updateNomina, getDistinctDateRanges, getNominasByEmpleadoId } from "../controllers/nomina.controller.js";
+import {
+    createNomina,
+    deleteNomina,
+    getNominaById,
+    getNominas,
+    getNominasRange,
+    updateNomina,
+    getDistinctDateRanges,
+    getNominasByEmpleadoId,
+    deleteNominasByDateRange
+} from "../controllers/nomina.controller.js";
 
 const router = Express.Router();
 
@@ -24,11 +34,10 @@ router.get('/:id_nomina', getNominaById)
 //Elimina una nomina por id
 router.delete('/:id_nomina', deleteNomina);
 
+//Elimina las nominas que coinciden con un rango de fecha
+router.delete('/:fecha_inicio/:fecha_fin', deleteNominasByDateRange)
+
 //actualiza una nomina por id
 router.put('/:id_nomina', updateNomina);
-
-
-
-
 
 export default router;

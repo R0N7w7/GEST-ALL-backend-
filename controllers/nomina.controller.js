@@ -81,7 +81,8 @@ export const getNominasRange = async (req, res) => {
             },
             include: {
                 model: Empleado, attributes: ['nombre', 'apellido_paterno']
-            }
+            },
+            order: [['fecha_inicio', 'ASC']]
         });
         res.status(200).json({ data: nominas });
     } catch (error) {
@@ -89,7 +90,6 @@ export const getNominasRange = async (req, res) => {
         res.status(500).json({ message: "Error al obtener las nóminas", error: error });
     }
 };
-
 
 // Obtener una nómina por ID
 export const getNominaById = async (req, res) => {
@@ -204,5 +204,32 @@ export const getNominasByEmpleadoId = async (req, res) => {
         res.json(nominas);
     } catch (error) {
         res.status(500).json({ message: error.message });
+    }
+};
+
+//Elmina Nominas de un rango establecido
+export const deleteNominasByDateRange = async (req, res) => {
+    const { fecha_inicio, fecha_fin } = req.params;
+
+    try {
+        const result = await Nomina.destroy({
+            where: {
+                fecha_inicio: {
+                    [Op.eq]: fecha_inicio
+                },
+                fecha_fin: {
+                    [Op.eq]: fecha_fin
+                }
+            }
+        });
+
+        if (result === 0) {
+            return res.status(404).json({ message: "No se encontraron nóminas para el rango de fechas especificado" });
+        }
+
+        return res.status(200).json({ message: "Nóminas eliminadas exitosamente" });
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({ message: "Error al eliminar las nóminas", error });
     }
 };
