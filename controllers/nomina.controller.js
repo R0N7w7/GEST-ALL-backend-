@@ -234,3 +234,15 @@ export const deleteNominasByDateRange = async (req, res) => {
         return res.status(500).json({ message: "Error al eliminar las nóminas", error });
     }
 };
+
+// Eliminar todas las nóminas de un empleado
+export const deleteNominasByEmpleadoId = async (req, res) => {
+    try {
+        const { id_empleado } = req.params;
+        const result = await Nomina.destroy({ where: { id_empleado } });
+        res.status(200).json({ message: `Se eliminaron ${result} nóminas` });
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ message: "Error al eliminar las nóminas", error: error });
+    }
+};

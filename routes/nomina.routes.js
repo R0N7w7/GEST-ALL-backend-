@@ -8,7 +8,8 @@ import {
     updateNomina,
     getDistinctDateRanges,
     getNominasByEmpleadoId,
-    deleteNominasByDateRange
+    deleteNominasByDateRange,
+    deleteNominasByEmpleadoId
 } from "../controllers/nomina.controller.js";
 
 const router = Express.Router();
@@ -29,15 +30,18 @@ router.get('/fecha/:fecha_inicio/:fecha_fin', getNominasRange);
 router.get('/distinct-date-ranges', getDistinctDateRanges);
 
 //tare una nomina por id
-router.get('/:id_nomina', getNominaById)
+router.get('/:id_nomina', getNominaById);
 
 //Elimina una nomina por id
 router.delete('/:id_nomina', deleteNomina);
 
 //Elimina las nominas que coinciden con un rango de fecha
-router.delete('/:fecha_inicio/:fecha_fin', deleteNominasByDateRange)
+router.delete('/rango/:fecha_inicio/:fecha_fin', deleteNominasByDateRange);
 
 //actualiza una nomina por id
 router.put('/:id_nomina', updateNomina);
+
+//elimina las nominas de un empleado
+router.delete('/empleado/:id_empleado', deleteNominasByEmpleadoId);
 
 export default router;
