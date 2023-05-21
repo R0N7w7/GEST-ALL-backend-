@@ -10,7 +10,6 @@ export const listarAsistencias = async (req, res, next) => {
     const regexFecha = /^\d{4}-\d{2}-\d{2}$/;
 
     if (regexFecha.test(fecha)) {
-      console.log("Fecha Bien");
       const asistencias = await Asistencia.findAll({
         where: { fecha: fecha },
         include: { model: Empleado, attributes: ['nombre', 'apellido_paterno'] },
@@ -24,6 +23,30 @@ export const listarAsistencias = async (req, res, next) => {
     return res.status(500).json({ message: "Error al consultar las asistencias" });
   }
 };
+
+//Traer todas las asistencias de un empleado en un rango de fechas
+export const getAsistenciasByIdDate = async (req, res, next) => {
+  try {
+    const { id_empleado, fecha_inicio, fecha_fin } = req.params;
+    const empleadoExistente = await Empleado.findByPk(id_empleado);
+    if (!empleadoExistente) {
+      return res.status(404).json({ message: 'No se encontró el empleado' });
+    }
+
+    const asistencias = await Asistencia.findAll({
+      where: {
+        id_empleado,
+        fecha: {
+          [Op.between]: [fecha_inicio, fecha_fin],
+        },
+      },
+    });
+
+    res.json(asistencias);
+  } catch (error) {
+    return res.status(500).json({ message: 'Error al listar asistencias' });
+  }
+}
 
 // Crear una nueva asistencia
 export const crearAsistencia = async (req, res, next) => {
