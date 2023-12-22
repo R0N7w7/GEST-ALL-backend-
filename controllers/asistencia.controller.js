@@ -1,10 +1,10 @@
-import { Op, where } from "sequelize";
-import { Empleado } from "../models/empleado.model.js";
+import { Op } from "sequelize";
 import { Asistencia } from "../models/asistencia.model.js";
+import { Empleado } from "../models/empleado.model.js";
 
 
 //Listar todas las asistencias
-export const listarAsistencias = async (req, res, next) => {
+export const getAsistencias = async (req, res, next) => {
   try {
     const fecha = (req.params.fecha.substring(0, 10));
     const regexFecha = /^\d{4}-\d{2}-\d{2}$/;
@@ -40,6 +40,7 @@ export const getAsistenciasByIdDate = async (req, res, next) => {
           [Op.between]: [fecha_inicio, fecha_fin],
         },
       },
+      order: [['fecha', 'ASC']]
     });
 
     res.json(asistencias);
@@ -49,7 +50,7 @@ export const getAsistenciasByIdDate = async (req, res, next) => {
 }
 
 // Crear una nueva asistencia
-export const crearAsistencia = async (req, res, next) => {
+export const createAsistencia = async (req, res, next) => {
   const { hora_entrada, hora_salida, fecha, horas_trabajadas, horas_extras, id_empleado } = req.body;
 
   try {
@@ -77,7 +78,7 @@ export const crearAsistencia = async (req, res, next) => {
 };
 
 // Actualizar una asistencia existente
-export const actualizarAsistencia = async (req, res, next) => {
+export const updateAsistencia = async (req, res, next) => {
   const { id_asistencia } = req.params;
   const { hora_entrada, hora_salida, fecha, horas_trabajadas, horas_extras, id_empleado } = req.body;
 
@@ -104,7 +105,7 @@ export const actualizarAsistencia = async (req, res, next) => {
 };
 
 //elimina una asistencia
-export const eliminarAsistencia = async (req, res) => {
+export const deleteAsistencia = async (req, res) => {
   const { id_asistencia } = req.params;
 
   try {
@@ -123,7 +124,7 @@ export const eliminarAsistencia = async (req, res) => {
 }
 
 //Elmina todas las asistencias de un empleado
-export const eliminarAsistenciasEmpleado = async (req, res) => {
+export const deleteAsistenciasEmpleado = async (req, res) => {
   const { id_empleado } = req.params;
 
   try {

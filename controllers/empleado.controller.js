@@ -1,8 +1,8 @@
-import { Op, where } from "sequelize";
+import { Op } from "sequelize";
 import { Empleado } from "../models/empleado.model.js";
 
 //Lista todos los empleados ordenados
-export const listarEmpleados = async (req, res) => {
+export const getEmpleados = async (req, res) => {
     try {
         const empleados = await Empleado.findAll({
             order: [['id_empleado', 'ASC']]
@@ -16,7 +16,7 @@ export const listarEmpleados = async (req, res) => {
 
 
 //Lista los empleados que cumplen con un campo en especifico
-export const buscarEmpleados = async (req, res) => {
+export const searchEmpleados = async (req, res) => {
     const { campo, valor } = req.params;
     try {
         let atributo;
@@ -60,7 +60,7 @@ export const buscarEmpleados = async (req, res) => {
 }
 
 //Crea un nuevo empleado
-export const crearEmpleado = async (req, res) => {
+export const createEmpleado = async (req, res) => {
     const { nombre, apellido_paterno, apellido_materno, telefono, salario_hora, salario_hora_extra } = req.body;
 
     try {
@@ -82,7 +82,7 @@ export const crearEmpleado = async (req, res) => {
 };
 
 //Elimina un empleado por su id
-export const eliminarEmpleado = async (req, res) => {
+export const deleteEmpleado = async (req, res) => {
     const { id_empleado } = req.params;
 
     try {
@@ -102,7 +102,7 @@ export const eliminarEmpleado = async (req, res) => {
 };
 
 //Actualiza un empleado por su id
-export const actualizarEmpleado = async (req, res) => {
+export const updateEmpleado = async (req, res) => {
     const { id_empleado } = req.params;
     const { nombre, apellido_paterno, apellido_materno, telefono, salario_hora, salario_hora_extra } = req.body;
 
